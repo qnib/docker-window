@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
+
+TIME_OUT=10
 set -xe
 
 export TEST_CONTAINER=$(echo nginx_test_$(date +%s))
@@ -8,7 +10,8 @@ test ! -z ${BUILD_IMG_NAME}
 echo "## start stack"
 docker-compose up -d
 
-sleep 5
+echo "## let 'em settle: sleep ${TIME_OUT}"
+sleep ${TIME_OUT}
 
 echo "#### Check HTTP connection"
 echo ">> curl -s http://window.node.consul |egrep 'nginx/.*passing'"
