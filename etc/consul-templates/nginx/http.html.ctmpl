@@ -16,12 +16,12 @@
 In fact this nginx server serves as proxy to services in the consul cluster.
 
 <p>Available services</p>
- <ul>
-  {{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "http" }}{{range $services}}<li><a href="/{{.Name}}/">/{{.Name}}/</a> (http://{{.Address}}:{{.Port}}/)</li>{{end}}{{end}}{{end}}{{end}}
+ <ul>{{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "http" }}{{range $services}}
+     <li><a href="/{{.Node}}/">/{{.Node}}/</a> (http://{{.Address}}:{{.Port}}/)</li>{{end}}{{end}}{{end}}{{end}}
 </ul>
 <p>All services</p>
- <ul>
-  {{range services}}{{range $tag, $services := service .Name | byTag}}{{ if eq $tag "http" }}{{range $services}}<li><a href="/{{.Name}}/">/{{.Name}}/</a> (http://{{.Address}}:{{.Port}}/) Status:{{.Status}}</li>{{end}}{{end}}{{end}}{{end}}
+ <ul>{{range services}}{{range $tag, $services := service .Name | byTag}}{{ if eq $tag "http" }}{{range $services}}
+     <li><a href="/{{.Node}}/">/{{.Node}}/</a> (http://{{.Address}}:{{.Port}}/) Status:{{.Status}}</li>{{end}}{{end}}{{end}}{{end}}
 </ul>
 </body>
 </html>

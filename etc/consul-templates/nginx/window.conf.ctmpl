@@ -5,8 +5,8 @@ server {
   location / {
       root /usr/share/nginx/html/;
       index index.php index.html;
-  }
-  {{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "http" }}{{range $services}}location /{{.Name}}/ {
+  }{{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "http" }}{{range $services}}
+  location /{{.Node}}/ {
       proxy_pass http://{{.Address}}:{{.Port}}/;
   }{{end}}{{end}}{{end}}{{end}}
 }
@@ -29,8 +29,8 @@ server {
   location / {
       root /usr/share/nginx/htmls/;
       index index.php index.html;
-  }
-  {{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "https" }}{{range $services}}location /{{.Name}}/ {
+  }{{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "https" }}{{range $services}}
+  location /{{.Node}}/ {
       proxy_pass https://{{.Address}}:{{.Port}}/;
   }{{end}}{{end}}{{end}}{{end}}
 }
