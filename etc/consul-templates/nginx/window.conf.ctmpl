@@ -2,9 +2,35 @@ server {
   listen 80;
   server_name 192.168.99.100 localhost;
 
-  root /usr/share/nginx/html/;
-  index index.php index.html;
-  location /qnib/ {
-    proxy_pass http://www.qnib.org/;
+  location / {
+      root /usr/share/nginx/html/;
+      index index.php index.html;
   }
+  {{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "http" }}{{range $services}}location /{{.Name}}/ {
+      proxy_pass http://{{.Address}}:{{.Port}}/;
+  }{{end}}{{end}}{{end}}{{end}}
+}
+
+server {
+  listen 443 ssl;
+  server_name 192.168.99.100 localhost;
+
+  # self-signed certificates
+  ssl_certificate /etc/ssl/nginx/certificate.crt;
+  ssl_certificate_key /etc/ssl/nginx/certificate.key;
+
+  # Add headers to serve security related headers
+  add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;";
+  add_header X-Content-Type-Options nosniff;
+  add_header X-Frame-Options "SAMEORIGIN";
+  add_header X-XSS-Protection "1; mode=block";
+  add_header X-Robots-Tag none;
+
+  location / {
+      root /usr/share/nginx/htmls/;
+      index index.php index.html;
+  }
+  {{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "https" }}{{range $services}}location /{{.Name}}/ {
+      proxy_pass https://{{.Address}}:{{.Port}}/;
+  }{{end}}{{end}}{{end}}{{end}}
 }

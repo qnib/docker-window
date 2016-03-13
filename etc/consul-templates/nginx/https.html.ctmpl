@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>This is served via <b>HTTPS</b> from {{ env "HOSTNAME" }}!</h1>
+
+In fact this nginx server serves as proxy to services in the consul cluster.
+
+<p>Available services</p>
+ <ul>
+  {{range services}}{{range $tag, $services := service .Name "passing"| byTag}}{{ if eq $tag "https" }}{{range $services}}<li><a href="/{{.Name}}/">/{{.Name}}/</a> (http://{{.Address}}:{{.Port}}/)</li>{{end}}{{end}}{{end}}{{end}}
+</ul>
+<p>All services</p>
+ <ul>
+  {{range services}}{{range $tag, $services := service .Name | byTag}}{{ if eq $tag "https" }}{{range $services}}<li><a href="/{{.Name}}/">/{{.Name}}/</a> (http://{{.Address}}:{{.Port}}/) Status:{{.Status}}</li>{{end}}{{end}}{{end}}{{end}}
+</ul>
+</body>
+</html>

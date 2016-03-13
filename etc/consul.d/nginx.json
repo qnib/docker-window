@@ -1,0 +1,23 @@
+{
+  "services": [
+    {
+        "id": "nginx",
+        "name": "nginx",
+        "port": 80,
+        "checks": [{
+            "script": "echo '# curl -sI http://localhost:80' ; curl -sI http://localhost:80",
+            "interval": "10s"
+        }]
+    },
+    {
+        "id": "nginx-ssl",
+        "name": "nginx-ssl",
+        "port": 443,
+        "checks": [{
+            "script": "echo '# curl -sI -k https://localhost:443' ; curl -sI -k https://localhost:443",
+            "interval": "10s"
+        }]
+    }
+    
+  ]
+}
