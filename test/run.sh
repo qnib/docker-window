@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-TIME_OUT=10
+TIME_OUT=20
 set -xe
 
 export TEST_CONTAINER=$(echo nginx_test_$(date +%s))
